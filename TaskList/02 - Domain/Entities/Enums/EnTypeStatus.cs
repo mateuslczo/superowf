@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace TaskList._01___Domain.Entities.Enums
+﻿namespace TaskList._01___Domain.Entities.Enums
 {
     public enum EnTypeStatus
     {
