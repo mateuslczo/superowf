@@ -13,13 +13,20 @@ namespace TaskList._03___Infra.Repositories
         /// </summary>
         /// <param name="name"></param>
         /// <returns>Task</returns>
-        Task<Tasks> GetTaskByNameAsync(string name);
+        Task<Tasks> GetTaskByTitleAsync(string name);
 
         /// <summary>
         /// Lista de todaas as tarefas
         /// </summary>
         /// <returns>ICollection<Task></returns>
         Task<ICollection<Tasks>> GetAllTaskAsync();
+        
+        /// <summary>
+        /// Verifica se a task já existe
+        /// </summary>
+        /// <param name="title"></param>
+        /// <returns></returns>
+        bool ValidateUniqueTasks(string title)
 
 
     }

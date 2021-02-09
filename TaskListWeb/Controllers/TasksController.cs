@@ -1,14 +1,20 @@
+using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using TaskList._01___Application.ViewModels;
+using TaskList._01___Domain;
+using TaskList._01___Domain.Interfaces;
+using TaskList._03___Infra.Repositories;
+using TaskListWeb.ViewModelResults;
 
-namespace mz_sysprod.Controllers
+namespace TaskListWeb.Controllers
 {
 
     /// <summary>
-    /// Requisições de Categoria
+    /// Endpoints
     /// </summary>
     /// <response code="200">Ok</response>
     /// <response code="400">Bad Request</response>
@@ -19,223 +25,223 @@ namespace mz_sysprod.Controllers
     [ApiController]
     [Authorize("Bearer")]
     [Route("v1/tasks")]
-    public class ProductController : ControllerBase
+    public class TasksController : ControllerBase
     {
 
-    //    /// <summary>
-    //    /// Listar produtos
-    //    /// </summary>
-    //    /// <param name="productRepository"></param>
-    //    /// <param name="mapper"></param>
-    //    /// <returns></returns>
-    //    [HttpGet]
-    //    public ActionResult<List<ProductViewModelResult>> AllProducts([FromServices] IProductRepository productRepository,
-    //                                                                  [FromServices] IMapper mapper)
-    //    {
-    //        try
-    //        {
+        /// <summary>
+        /// Listar tarefas
+        /// </summary>
+        /// <param name="tasksRepository"></param>
+        /// <param name="mapper"></param>
+        /// <returns>List<TasksViewModel></returns>
+        [HttpGet]
+        public ActionResult<List<TasksViewModelResult>> AllTasks([FromServices] ITaskRepository tasksRepository,
+                                                              [FromServices] IMapper mapper)
+        {
+            try
+            {
 
-    //            var products = productRepository.GetAllProducts().Result;
+                var _tasks = tasksRepository.GetAllTaskAsync().Result;
 
-    //            if (products.Count == 0)
-    //                return NotFound();
+                if (_tasks.Count == 0)
+                    return NotFound();
 
-    //            var viewProduct = mapper.Map<List<ProductViewModelResult>>(products);
+                var viewTasks = mapper.Map<List<TasksViewModelResult>>(_tasks);
 
-    //            return Ok(viewProduct);
-
-
-    //        } catch (Exception error)
-    //        {
-
-    //            return BadRequest(new { error = error.Message.ToString() });
-
-    //        }
-
-    //    }
-
-    //    /// <summary>
-    //    /// Buscar produto por Id
-    //    /// </summary>
-    //    /// <param name="productRepository"></param>
-    //    /// <param name="mapper"></param>
-    //    /// <param name="id"></param>
-    //    /// <returns></returns>
-    //    [HttpGet]
-    //    [Route("{id:long}")]
-    //    public ActionResult<ProductViewModelResult> ProductById([FromServices] IProductRepository productRepository,
-    //                                                              [FromServices] IMapper mapper,
-    //                                                              long id)
-    //    {
-    //        try
-    //        {
-    //            var product = productRepository.Get(id);
-
-    //            if (product == null)
-    //                return NotFound();
-
-    //            var viewProduct = mapper.Map<ProductViewModelResult>(product);
-
-    //            return Ok(viewProduct);
-
-    //        } catch (Exception error)
-    //        {
-
-    //            return BadRequest(new { error = error.Message.ToString() });
-
-    //        }
-    //    }
-
-    //    /// <summary>
-    //    /// Buscar produto por nome
-    //    /// </summary>
-    //    /// <param name="productRepository"></param>
-    //    /// <param name="mapper"></param>
-    //    /// <param name="categoryName"></param>
-    //    /// <returns></returns>
-    //    [HttpGet]
-    //    [Route("{categoryName}")]
-    //    public ActionResult<List<ProductViewModelResult>> ProductByCategoryName([FromServices] IProductRepository productRepository,
-    //                                                                      [FromServices] IMapper mapper,
-    //                                                                      string categoryName)
-    //    {
-    //        try
-    //        {
-    //            var products = productRepository.GetProductsByCategoryNameAsync(categoryName);
-
-    //            if (products == null)
-    //                return NotFound();
-
-    //            var viewProducts = mapper.Map<List<ProductViewModelResult>>(products);
-    //            return Ok(viewProducts);
-
-    //        } catch (Exception error)
-    //        {
-
-    //            return BadRequest(new { error = error.Message.ToString() });
-
-    //        }
-
-    //    }
+                return Ok(viewTasks);
 
 
-    //    /// <summary>
-    //    /// Inserir produto
-    //    /// </summary>
-    //    /// <param name="productRepository"></param>
-    //    /// <param name="dataTransaction"></param>
-    //    /// <param name="mapper"></param>
-    //    /// <param name="product"></param>
-    //    /// <returns></returns>
-    //    [HttpPost]
-    //    public ActionResult<ProductViewModel> Post([FromServices] IProductRepository productRepository,
-    //                                               [FromServices] IDataTransaction dataTransaction,
-    //                                               [FromServices] IMapper mapper,
-    //                                               [FromBody] ProductViewModel product)
-    //    {
+            } catch (Exception error)
+            {
+
+                return BadRequest(new { error = error.Message.ToString() });
+
+            }
+
+        }
+
+        /// <summary>
+        /// Tarefas por id
+        /// </summary>
+        /// <param name="tasksRepository"></param>
+        /// <param name="mapper"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{id:long}")]
+        public ActionResult<TasksViewModelResult> TasksById([FromServices] ITaskRepository tasksRepository,
+                                                                  [FromServices] IMapper mapper,
+                                                                  long id)
+        {
+            try
+            {
+                var _tasks = tasksRepository.Get(id);
+
+                if (_tasks == null)
+                    return NotFound();
+
+                var viewTasks = mapper.Map<TasksViewModelResult>(_tasks);
+
+                return Ok(viewTasks);
+
+            } catch (Exception error)
+            {
+
+                return BadRequest(new { error = error.Message.ToString() });
+
+            }
+        }
+
+        /// <summary>
+        /// Buscar tarefa por titulo
+        /// </summary>
+        /// <param name="tasksRepository"></param>
+        /// <param name="mapper"></param>
+        /// <param name="categoryName"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{title}")]
+        public ActionResult<List<TasksViewModelResult>> TasksByTitle([FromServices] ITaskRepository tasksRepository,
+                                                                          [FromServices] IMapper mapper,
+                                                                          string title)
+        {
+            try
+            {
+                var _tasks = tasksRepository.GetTaskByTitleAsync(title).Result;
+
+                if (_tasks == null)
+                    return NotFound();
+
+                var viewTasks = mapper.Map<List<TasksViewModelResult>>(_tasks);
+                return Ok(viewTasks);
+
+            } catch (Exception error)
+            {
+
+                return BadRequest(new { error = error.Message.ToString() });
+
+            }
+
+        }
 
 
-    //        if (product == null)
-    //            return BadRequest(new { error = "Não foi possível cadastrar produto, verifique!" });
-
-    //        try
-    //        {
-
-    //            if (!productRepository.ValidateUniqueProduct(product.Name))
-    //                return BadRequest("Produto já cadastrado");
-
-
-    //            var productSent = mapper.Map<Product>(product);
-
-    //            productRepository.Save(productSent);
-
-    //            dataTransaction.Commit();
-
-    //            return Ok("Produto cadastrado");
-
-    //        } catch (Exception error)
-    //        {
-
-    //            dataTransaction.RollBack();
-    //            return BadRequest(new { Error = error.Message.ToString() });
-
-    //        }
-    //    }
+        /// <summary>
+        /// Inserir tarefa
+        /// </summary>
+        /// <param name="tasksRepository"></param>
+        /// <param name="dataTransaction"></param>
+        /// <param name="mapper"></param>
+        /// <param name="_tasks"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult<TasksViewModel> Post([FromServices] ITaskRepository tasksRepository,
+                                                   [FromServices] IDataTransaction dataTransaction,
+                                                   [FromServices] IMapper mapper,
+                                                   [FromBody] TasksViewModel _tasks)
+        {
 
 
-    //    /// <summary>
-    //    /// Ataulizar produto
-    //    /// </summary>
-    //    /// <param name="productRepository"></param>
-    //    /// <param name="dataTransaction"></param>
-    //    /// <param name="mapper"></param>
-    //    /// <param name="product"></param>
-    //    /// <returns></returns>
-    //    [HttpPut]
-    //    public ActionResult<ProductViewModel> Put([FromServices] IProductRepository productRepository,
-    //                                              [FromServices] IDataTransaction dataTransaction,
-    //                                              [FromServices] IMapper mapper,
-    //                                              [FromBody] ProductViewModel product)
-    //    {
+            if (_tasks == null)
+                return BadRequest(new { error = "Não foi possível abrir tarefa, verifique!" });
 
-    //        if (product == null)
-    //            return BadRequest(new { error = "Não foi possível atualizar produto, verifique!" });
+            try
+            {
 
-    //        try
-    //        {
-
-    //            var productSent = mapper.Map<Product>(product);
-    //            productRepository.Update(productSent);
-
-    //            dataTransaction.Commit();
-
-    //            return Ok(new { Success = "Produto atualizado" });
-
-    //        } catch (Exception error)
-    //        {
-
-    //            dataTransaction.RollBack();
-    //            return BadRequest(new { Error = error.Message.ToString() });
-
-    //        }
-    //    }
+                if (!tasksRepository.ValidateUniqueTasks(_tasks.Title))
+                    return BadRequest("Já existe uma tarefa com esse nome");
 
 
-    //    /// <summary>
-    //    /// Remover produto
-    //    /// </summary>
-    //    /// <param name="productRepository"></param>
-    //    /// <param name="dataTransaction"></param>
-    //    /// <param name="id"></param>
-    //    /// <returns></returns>
-    //    [HttpDelete]
-    //    [Route("{id:long}")]
-    //    public ActionResult Delete([FromServices] IProductRepository productRepository,
-    //                               [FromServices] IDataTransaction dataTransaction,
-    //                               int id)
-    //    {
+                var _tasksSent = mapper.Map<Tasks>(_tasks);
 
-    //        var product = productRepository.Get(id);
+                tasksRepository.Save(_tasksSent);
 
-    //        if (product == null)
-    //            return NotFound();
+                dataTransaction.Commit();
 
-    //        try
-    //        {
+                return Ok("Tarefa criada");
 
-    //            productRepository.Remove(product);
-    //            dataTransaction.Commit();
+            } catch (Exception error)
+            {
 
-    //            return Ok(new { Success = "Produto removido com sucesso" });
+                dataTransaction.RollBack();
+                return BadRequest(new { Error = error.Message.ToString() });
 
-    //        } catch (Exception error)
-    //        {
+            }
+        }
 
-    //            dataTransaction.RollBack();
-    //            return BadRequest(new { Error = error.Message.ToString() });
 
-    //        }
+        /// <summary>
+        /// Ataulizar tarefa
+        /// </summary>
+        /// <param name="tasksRepository"></param>
+        /// <param name="dataTransaction"></param>
+        /// <param name="mapper"></param>
+        /// <param name="_tasks"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public ActionResult<TasksViewModel> Put([FromServices] ITaskRepository tasksRepository,
+                                                  [FromServices] IDataTransaction dataTransaction,
+                                                  [FromServices] IMapper mapper,
+                                                  [FromBody] TasksViewModel _tasks)
+        {
 
-    //    }
+            if (_tasks == null)
+                return BadRequest(new { error = "Não foi possível atualizar tarefa, verifique!" });
+
+            try
+            {
+
+                var _tasksSent = mapper.Map<Tasks>(_tasks);
+                tasksRepository.Update(_tasksSent);
+
+                dataTransaction.Commit();
+
+                return Ok(new { Success = "Tarefa atualizada" });
+
+            } catch (Exception error)
+            {
+
+                dataTransaction.RollBack();
+                return BadRequest(new { Error = error.Message.ToString() });
+
+            }
+        }
+
+
+        /// <summary>
+        /// Remover tarefa
+        /// </summary>
+        /// <param name="tasksRepository"></param>
+        /// <param name="dataTransaction"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete]
+        [Route("{id:long}")]
+        public ActionResult Delete([FromServices] ITaskRepository tasksRepository,
+                                   [FromServices] IDataTransaction dataTransaction,
+                                   int id)
+        {
+
+            var _tasks = tasksRepository.Get(id);
+
+            if (_tasks == null)
+                return NotFound();
+
+            try
+            {
+
+                tasksRepository.Remove(_tasks);
+                dataTransaction.Commit();
+
+                return Ok(new { Success = "Tarefa excluida" });  CRIAR CONTROLLER TAREFAS CONCLUIDAS, PENDENTES ETC
+
+            } catch (Exception error)
+            {
+
+                dataTransaction.RollBack();
+                return BadRequest(new { Error = error.Message.ToString() });
+
+            }
+
+        }
     }
 }
