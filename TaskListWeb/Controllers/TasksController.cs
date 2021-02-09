@@ -232,7 +232,7 @@ namespace TaskListWeb.Controllers
                 tasksRepository.Remove(_tasks);
                 dataTransaction.Commit();
 
-                return Ok(new { Success = "Tarefa excluida" });  CRIAR CONTROLLER TAREFAS CONCLUIDAS, PENDENTES ETC
+                return Ok(new { Success = "Tarefa excluida" });  // CRIAR CONTROLLER TAREFAS CONCLUIDAS, PENDENTES ETC
 
             } catch (Exception error)
             {
