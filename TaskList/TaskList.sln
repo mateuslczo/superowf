@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30225.117
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskList", "TaskList.csproj", "{F3F6B690-6514-46EF-BBD6-043F7030DA2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskList", "TaskList.csproj", "{F3F6B690-6514-46EF-BBD6-043F7030DA2A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskListWeb", "..\TaskListWeb\TaskListWeb.csproj", "{75E1CACC-36BE-404B-A2EE-EEAB52F0DB2D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{F3F6B690-6514-46EF-BBD6-043F7030DA2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3F6B690-6514-46EF-BBD6-043F7030DA2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F3F6B690-6514-46EF-BBD6-043F7030DA2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{75E1CACC-36BE-404B-A2EE-EEAB52F0DB2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{75E1CACC-36BE-404B-A2EE-EEAB52F0DB2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{75E1CACC-36BE-404B-A2EE-EEAB52F0DB2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{75E1CACC-36BE-404B-A2EE-EEAB52F0DB2D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

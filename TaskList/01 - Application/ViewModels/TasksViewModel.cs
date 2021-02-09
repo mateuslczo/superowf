@@ -1,13 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System;
+using TaskList._01___Application.ViewModels.Enums;
 
 namespace TaskList._01___Application.ViewModels
 {
-
     public class TasksViewModel
     {
-
         public string Title { get; set; }
 
         public EnTypeStatusViewModel Status { get; set; }
