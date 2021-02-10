@@ -17,6 +17,38 @@ namespace TaskList._01___Domain
         public DateTime? EditDate { get; set; }
 
         public DateTime? ConclusionDate { get; set; }
+
+        public void ChangeDateForStatus(EnTypeStatus status)
+        {
+
+            switch (status)
+            {
+                case EnTypeStatus.Open:
+                    this.CreateDate = DateTime.Now;
+                    break;
+                case EnTypeStatus.Inprogress:
+                    this.EditDate = DateTime.Now;
+                    break;
+                case EnTypeStatus.Completed:
+                    this.ConclusionDate = DateTime.Now;
+                    break;
+                case EnTypeStatus.Suspended:
+                    ;
+                    this.EditDate = DateTime.Now;
+                    break;
+                case EnTypeStatus.Canceled:
+                    this.EditDate = DateTime.Now;
+                    break;
+                default:
+                    this.EditDate = null;
+                    this.ConclusionDate =null;
+                    break;
+
+
+            }
+
+        }
+
     }
 }
 

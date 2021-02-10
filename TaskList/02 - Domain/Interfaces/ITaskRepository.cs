@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using TaskList._01___Domain;
+using TaskList._01___Domain.Entities.Enums;
 using TaskList._01___Domain.Interfaces;
 
 namespace TaskList._03___Infra.Repositories
@@ -26,7 +27,15 @@ namespace TaskList._03___Infra.Repositories
         /// </summary>
         /// <param name="title"></param>
         /// <returns></returns>
-        Task<bool> ValidateUniqueTasks(string title);
+        Task<bool> ValidateUniqueTasksAsync(string title);
+
+        /// <summary>
+        /// Atualizar status da tarefa
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="tpStatus"></param>
+        /// <returns></returns>
+        Task UpdateStatusTasks(Tasks _task, int tpStatus);
 
 
     }

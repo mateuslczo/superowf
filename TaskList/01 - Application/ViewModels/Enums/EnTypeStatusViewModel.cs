@@ -3,10 +3,11 @@
     public enum EnTypeStatusViewModel
     {
 
-        Inprogress = 1,
-        Completed = 2,
-        Canceled = 3,
-        Suspended = 4,
-        Removed = 5
+        Open = 1,
+        Inprogress = 2,
+        Completed = 3,
+        Canceled = 4,
+        Suspended = 5,
+
     }
 }

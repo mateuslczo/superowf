@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using TaskList._01___Domain;
+using TaskList._01___Domain.Entities.Enums;
 using TaskList._03___Infra.Repositories.DatabaseContext;
 
 namespace TaskList._03___Infra.Repositories
@@ -31,7 +32,22 @@ namespace TaskList._03___Infra.Repositories
             return taskList;
         }
 
-        public async Task<bool> ValidateUniqueTasks(string title) 
+
+        public async Task UpdateStatusTasks(Tasks _task, int tpStatus)
+        {
+
+            EnTypeStatus status = (EnTypeStatus)tpStatus;
+
+            _task.Status = status;
+            
+            _task.ChangeDateForStatus(status);
+
+            await context.SaveChangesAsync();
+
+        }
+
+
+        public async Task<bool> ValidateUniqueTasksAsync(string title) 
         {
 
             var _task = await GetTaskByTitleAsync(title);
@@ -43,6 +59,7 @@ namespace TaskList._03___Infra.Repositories
 
         }
 
+   
 
     }
 }

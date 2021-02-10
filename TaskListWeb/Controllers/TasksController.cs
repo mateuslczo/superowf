@@ -7,9 +7,10 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using TaskList._01___Application.ViewModels;
 using TaskList._01___Domain;
+using TaskList._01___Domain.Entities.Enums;
 using TaskList._01___Domain.Interfaces;
 using TaskList._03___Infra.Repositories;
-using TaskListWeb.ViewModelResults;
+
 
 namespace TaskListWeb.Controllers
 {
@@ -108,7 +109,7 @@ namespace TaskListWeb.Controllers
         {
             try
             {
-                var _tasks = await tasksRepository.GetTaskByTitleAsync(title);
+                var _tasks = await tasksRepository.GetTaskByTitleAsync(title.ToLower());
 
                 if (_tasks.Count == 0)
                     return NotFound();
@@ -148,11 +149,12 @@ namespace TaskListWeb.Controllers
             try
             {
 
-                if (!tasksRepository.ValidateUniqueTasks(_tasks.Title).Result)
+                if (!tasksRepository.ValidateUniqueTasksAsync(_tasks.Title).Result)
                     return BadRequest("Já existe uma tarefa com esse nome");
 
+                 var _tasksSent = mapper.Map<Tasks>(_tasks);
 
-                var _tasksSent = mapper.Map<Tasks>(_tasks);
+                _tasksSent.ChangeDateForStatus(EnTypeStatus.Open);
 
                 await tasksRepository.Save(_tasksSent);
 
@@ -193,6 +195,44 @@ namespace TaskListWeb.Controllers
 
                 var _tasksSent = mapper.Map<Tasks>(_tasks);
                 tasksRepository.Update(_tasksSent);
+
+                dataTransaction.Commit();
+
+                return Ok(new { Success = "Tarefa atualizada" });
+
+            } catch (Exception error)
+            {
+
+                dataTransaction.RollBack();
+                return BadRequest(new { Error = error.Message.ToString() });
+
+            }
+        }
+
+        /// <summary>
+        /// Ataulizar status da tarefa
+        /// </summary>
+        /// <param name="tasksRepository"></param>
+        /// <param name="dataTransaction"></param>
+        /// <param name="id"></param>
+        /// <param name="status"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{id:long}/{status:int}")]
+        public async Task<ActionResult<TasksViewModel>> PutStatus([FromServices] ITaskRepository tasksRepository,
+                                                  [FromServices] IDataTransaction dataTransaction, [FromServices] IMapper mapper,
+                                                  long id, int status)
+
+        {
+
+            try
+            {
+                var _task = mapper.Map<Tasks>(await tasksRepository.Get(id));
+
+                if (_task == null)
+                    return NotFound();
+
+                await tasksRepository.UpdateStatusTasks(_task, status);
 
                 dataTransaction.Commit();
 

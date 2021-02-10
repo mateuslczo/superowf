@@ -1,8 +1,7 @@
 ﻿using System;
-using TaskList._01___Domain;
 using TaskList._01___Domain.Entities.Enums;
 
-namespace TaskListWeb.ViewModelResults
+namespace TaskList._01___Application.ViewModels
 {
     public class TasksViewModelResult
     {

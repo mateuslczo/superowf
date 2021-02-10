@@ -1,5 +1,5 @@
 ﻿using System;
-using TaskList._01___Application.ViewModels.Enums;
+using TaskList._01___Domain.Entities.Enums;
 
 namespace TaskList._01___Application.ViewModels
 {
@@ -7,7 +7,7 @@ namespace TaskList._01___Application.ViewModels
     {
         public string Title { get; set; }
 
-        public EnTypeStatusViewModel Status { get; set; }
+        public EnTypeStatus Status { get; set; }
 
         public string Description { get; set; }
 
