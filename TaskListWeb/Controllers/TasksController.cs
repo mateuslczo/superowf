@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using TaskList._01___Application.ViewModels;
 using TaskList._01___Domain;
 using TaskList._01___Domain.Interfaces;
@@ -35,13 +36,13 @@ namespace TaskListWeb.Controllers
         /// <param name="mapper"></param>
         /// <returns></returns>
         [HttpGet]
-        public ActionResult<List<TasksViewModelResult>> AllTasks([FromServices] ITaskRepository tasksRepository,
+        public async Task<ActionResult<List<TasksViewModelResult>>> AllTasks([FromServices] ITaskRepository tasksRepository,
                                                                  [FromServices] IMapper mapper)
         {
             try
             {
 
-                var _tasks = tasksRepository.GetAllTaskAsync().Result;
+                var _tasks = await tasksRepository.GetAllTaskAsync();
 
                 if (_tasks.Count == 0)
                     return NotFound();
@@ -69,13 +70,13 @@ namespace TaskListWeb.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{id:long}")]
-        public ActionResult<TasksViewModelResult> TasksById([FromServices] ITaskRepository tasksRepository,
+        public async Task<ActionResult<TasksViewModelResult>> TasksById([FromServices] ITaskRepository tasksRepository,
                                                                   [FromServices] IMapper mapper,
                                                                   long id)
         {
             try
             {
-                var _tasks = tasksRepository.Get(id);
+                var _tasks = await tasksRepository.Get(id);
 
                 if (_tasks == null)
                     return NotFound();
@@ -101,15 +102,15 @@ namespace TaskListWeb.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("{title}")]
-        public ActionResult<List<TasksViewModelResult>> TasksByTitle([FromServices] ITaskRepository tasksRepository,
+        public async Task<ActionResult<List<TasksViewModelResult>>> TasksByTitle([FromServices] ITaskRepository tasksRepository,
                                                                           [FromServices] IMapper mapper,
                                                                           string title)
         {
             try
             {
-                var _tasks = tasksRepository.GetTaskByTitleAsync(title).Result;
+                var _tasks = await tasksRepository.GetTaskByTitleAsync(title);
 
-                if (_tasks == null)
+                if (_tasks.Count == 0)
                     return NotFound();
 
                 var viewTasks = mapper.Map<List<TasksViewModelResult>>(_tasks);
@@ -134,7 +135,7 @@ namespace TaskListWeb.Controllers
         /// <param name="_tasks"></param>
         /// <returns></returns>
         [HttpPost]
-        public ActionResult<TasksViewModel> Post([FromServices] ITaskRepository tasksRepository,
+        public async Task<ActionResult<TasksViewModel>> Post([FromServices] ITaskRepository tasksRepository,
                                                    [FromServices] IDataTransaction dataTransaction,
                                                    [FromServices] IMapper mapper,
                                                    [FromBody] TasksViewModel _tasks)
@@ -147,13 +148,13 @@ namespace TaskListWeb.Controllers
             try
             {
 
-                if (!tasksRepository.ValidateUniqueTasks(_tasks.Title))
+                if (!tasksRepository.ValidateUniqueTasks(_tasks.Title).Result)
                     return BadRequest("Já existe uma tarefa com esse nome");
 
 
                 var _tasksSent = mapper.Map<Tasks>(_tasks);
 
-                tasksRepository.Save(_tasksSent);
+                await tasksRepository.Save(_tasksSent);
 
                 dataTransaction.Commit();
 
@@ -178,7 +179,7 @@ namespace TaskListWeb.Controllers
         /// <param name="_tasks"></param>
         /// <returns></returns>
         [HttpPut]
-        public ActionResult<TasksViewModel> Put([FromServices] ITaskRepository tasksRepository,
+        public async Task<ActionResult<TasksViewModel>> Put([FromServices] ITaskRepository tasksRepository,
                                                   [FromServices] IDataTransaction dataTransaction,
                                                   [FromServices] IMapper mapper,
                                                   [FromBody] TasksViewModel _tasks)
@@ -216,12 +217,12 @@ namespace TaskListWeb.Controllers
         /// <returns></returns>
         [HttpDelete]
         [Route("{id:long}")]
-        public ActionResult Delete([FromServices] ITaskRepository tasksRepository,
+        public async Task<ActionResult> Delete([FromServices] ITaskRepository tasksRepository,
                                    [FromServices] IDataTransaction dataTransaction,
                                    int id)
         {
 
-            var _tasks = tasksRepository.Get(id);
+            var _tasks = await tasksRepository.Get(id);
 
             if (_tasks == null)
                 return NotFound();

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using TaskList._01___Domain.Interfaces;
 using TaskList._03___Infra.Repositories.DatabaseContext;
 
@@ -14,9 +15,9 @@ namespace TaskList._03___Infra.Repositories
             this.dataContext = dataContext;
         }
 
-        public Entity Get(long id)
+        public async Task<Entity> Get(long id)
         {
-            var entity = this.dataContext.Set<Entity>().Find(id);
+            var entity = await this.dataContext.Set<Entity>().FindAsync(id);
             return entity;
         }
 
@@ -27,10 +28,10 @@ namespace TaskList._03___Infra.Repositories
 
         }
 
-        public void Save(Entity entity)
+        public async Task Save(Entity entity)
         {
 
-            this.dataContext.Set<Entity>().AddRange(entity);
+            await this.dataContext.Set<Entity>().AddRangeAsync(entity);
 
         }
 

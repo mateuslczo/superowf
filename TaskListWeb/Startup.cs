@@ -44,6 +44,7 @@ namespace TaskListWeb
             services.AddScoped<ITaskRepository, TaskRepository>();
             services.AddCors();
 
+
             /*Automapper*/
             var config = new AutoMapper.MapperConfiguration(c =>
             {

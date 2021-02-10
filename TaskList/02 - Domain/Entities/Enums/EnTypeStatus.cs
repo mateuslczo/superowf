@@ -2,6 +2,7 @@
 {
     public enum EnTypeStatus
     {
+        Open = 0,
         Inprogress = 1,
         Completed = 2,
         Canceled = 3,

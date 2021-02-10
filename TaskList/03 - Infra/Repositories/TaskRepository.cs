@@ -19,9 +19,9 @@ namespace TaskList._03___Infra.Repositories
         }
 
 
-        public async Task<Tasks> GetTaskByTitleAsync(string title)
+        public async Task<ICollection<Tasks>> GetTaskByTitleAsync(string title)
         {
-            var task = await context.Tasks.Where(t => t.Title.StartsWith(title)).FirstOrDefaultAsync();
+            var task = await context.Tasks.Where(t => t.Title.StartsWith(title)).ToListAsync();
             return task;
         }
 
@@ -31,12 +31,12 @@ namespace TaskList._03___Infra.Repositories
             return taskList;
         }
 
-        public bool ValidateUniqueTasks(string title) 
+        public async Task<bool> ValidateUniqueTasks(string title) 
         {
 
-            var _task = GetTaskByTitleAsync(title).Result;
+            var _task = await GetTaskByTitleAsync(title);
 
-            if (_task != null)
+            if (_task.Count > 0)
                 return false;
 
             return true;
