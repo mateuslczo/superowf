@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using TaskList._01___Application.ViewModels.MapperConfig;
 using TaskList._01___Domain.Interfaces;
 using TaskList._03___Infra.Repositories;
@@ -23,6 +24,11 @@ namespace TaskListWeb
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+         services.AddDbContext<DataContext>(options => options
+                                               .UseInMemoryDatabase("DBTASKLIST")
+                                               .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole()))
+                                   );
 
             services.AddScoped<DataContext, DataContext>();
             services.AddScoped<IDataTransaction, DataTransaction>();
@@ -60,6 +66,12 @@ namespace TaskListWeb
             app.UseRouting();
 
             app.UseAuthorization();
+
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
 
         }
     }

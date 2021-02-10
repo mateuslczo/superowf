@@ -1,10 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using TaskList._01___Domain;
 
-namespace TaskList._03___Infra.Repositories
+namespace TaskList._03___Infra.Repositories.DatabaseContext
 {
 
     public class DataContext : DbContext
