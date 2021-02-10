@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>TaskListWeb</name>
+    </assembly>
+    <members>
+        <member name="M:TaskListWeb.Controllers.AuthController.Post(TaskList._01___Application.TokenSecurity.TokenSecurityModels.TokenConfig,TaskList._01___Application.TokenSecurity.TokenSecurityModels.UserLogin,TaskList._01___Application.TokenSecurity.TokenSecurityConfig,TaskList._01___Application.ViewModels.UserAccessViewModel)">
+            <summary>
+            Gerar token e autenticar usuário
+            </summary>
+        </member>
+        <member name="T:TaskListWeb.Controllers.TasksController">
+            <summary>
+            Endpoints
+            </summary>
+            <response code="200">Ok</response>
+            <response code="400">Bad Request</response>
+            <response code="401">Unauthorized</response>
+            <response code="404">Not Found</response>
+            <response code="500">Internal server error</response>
+        </member>
+        <member name="M:TaskListWeb.Controllers.TasksController.AllTasks(TaskList._03___Infra.Repositories.ITaskRepository,AutoMapper.IMapper)">
+            <summary>
+            Listar tarefas
+            </summary>
+            <param name="tasksRepository"></param>
+            <param name="mapper"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TaskListWeb.Controllers.TasksController.TasksById(TaskList._03___Infra.Repositories.ITaskRepository,AutoMapper.IMapper,System.Int64)">
+            <summary>
+            Tarefas por id
+            </summary>
+            <param name="tasksRepository"></param>
+            <param name="mapper"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TaskListWeb.Controllers.TasksController.TasksByTitle(TaskList._03___Infra.Repositories.ITaskRepository,AutoMapper.IMapper,System.String)">
+            <summary>
+            Buscar tarefa por titulo
+            </summary>
+            <param name="tasksRepository"></param>
+            <param name="mapper"></param>
+            <param name="title"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TaskListWeb.Controllers.TasksController.Post(TaskList._03___Infra.Repositories.ITaskRepository,TaskList._01___Domain.Interfaces.IDataTransaction,AutoMapper.IMapper,TaskList._01___Application.ViewModels.TasksViewModel)">
+            <summary>
+            Inserir tarefa
+            </summary>
+            <param name="tasksRepository"></param>
+            <param name="dataTransaction"></param>
+            <param name="mapper"></param>
+            <param name="_tasks"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TaskListWeb.Controllers.TasksController.Put(TaskList._03___Infra.Repositories.ITaskRepository,TaskList._01___Domain.Interfaces.IDataTransaction,AutoMapper.IMapper,TaskList._01___Application.ViewModels.TasksViewModel)">
+            <summary>
+            Ataulizar tarefa
+            </summary>
+            <param name="tasksRepository"></param>
+            <param name="dataTransaction"></param>
+            <param name="mapper"></param>
+            <param name="_tasks"></param>
+            <returns></returns>
+        </member>
+        <member name="M:TaskListWeb.Controllers.TasksController.Delete(TaskList._03___Infra.Repositories.ITaskRepository,TaskList._01___Domain.Interfaces.IDataTransaction,System.Int32)">
+            <summary>
+            Remover tarefa
+            </summary>
+            <param name="tasksRepository"></param>
+            <param name="dataTransaction"></param>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

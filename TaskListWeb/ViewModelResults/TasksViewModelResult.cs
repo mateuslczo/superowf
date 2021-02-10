@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using TaskList._01___Application.ViewModels.Enums;
 using TaskList._01___Domain;
 

@@ -23,7 +23,7 @@ namespace TaskListWeb.Controllers
     /// <response code="500">Internal server error</response>
     [EnableCors]
     [ApiController]
-    [Authorize("Bearer")]
+    //[Authorize("Bearer")] desabilitado para facilitar os testes
     [Route("v1/tasks")]
     public class TasksController : ControllerBase
     {
@@ -33,10 +33,10 @@ namespace TaskListWeb.Controllers
         /// </summary>
         /// <param name="tasksRepository"></param>
         /// <param name="mapper"></param>
-        /// <returns>List<TasksViewModel></returns>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult<List<TasksViewModelResult>> AllTasks([FromServices] ITaskRepository tasksRepository,
-                                                              [FromServices] IMapper mapper)
+                                                                 [FromServices] IMapper mapper)
         {
             try
             {
@@ -97,7 +97,7 @@ namespace TaskListWeb.Controllers
         /// </summary>
         /// <param name="tasksRepository"></param>
         /// <param name="mapper"></param>
-        /// <param name="categoryName"></param>
+        /// <param name="title"></param>
         /// <returns></returns>
         [HttpGet]
         [Route("{title}")]
