@@ -22,7 +22,7 @@ namespace TaskList._03___Infra.Repositories.DatabaseContext
 
         public void RollBack()
         { 
-            context.Dispose();  // Testar para validar senão derrubará a aplicação se derrubar deixar por conta do Garbage
+            context.Dispose();  
             
         }
     }

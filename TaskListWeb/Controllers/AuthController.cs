@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Principal;
@@ -61,18 +62,26 @@ namespace TaskListWeb.Controllers
 
                     var token = handler.WriteToken(securityToken);
 
-                    return Ok(new
+                    var result = new
                     {
-                        accessToken = token,
+                        AccessToken = token,
                         created = dataCriacao.ToString("yyyy-MM-dd HH:mm:ss"),
                         expiration = dataExpiracao.ToString("yyyy-MM-dd HH:mm:ss"),
                         authenticated = true
-                    });
+                    };
+                    return Ok(result);
+
 
                 } else
                 {
+                    var result = new
+                    {
+                        AccessToken = "",
+                        authenticated = false
+                    } ;
 
-                    return Unauthorized(new { authenticated = false });
+
+                    return Ok(result);
 
                 }
             }
