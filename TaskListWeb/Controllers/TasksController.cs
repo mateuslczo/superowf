@@ -146,7 +146,7 @@ namespace TaskListWeb.Controllers
         /// </summary>
         /// <param name="_tasks"></param>
         /// <returns></returns>
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         [HttpPost]
         public async Task<ActionResult<TasksViewModel>> Post([FromBody] TasksViewModel _tasks)
         {
@@ -200,7 +200,7 @@ namespace TaskListWeb.Controllers
         /// </summary>
         /// <param name="_tasks"></param>
         /// <returns></returns>
-        [Authorize("Bearer")]
+        //[Authorize("Bearer")]
         [HttpPut]
         public async Task<ActionResult<TasksViewModel>> Put([FromBody] TasksViewModel _tasks)
         {
@@ -289,13 +289,13 @@ namespace TaskListWeb.Controllers
         public async Task<ActionResult> Delete(long id)
         {
 
-            var _tasks = await tasksRepository.Get(id);
+            var _tasks = mapper.Map<Tasks>(await tasksRepository.Get(id));
+            //var _tasks = await tasksRepository.Get(id);
 
             if (_tasks == null)
                 return NotFound();
 
-            try
-            {
+            try {
 
                 tasksRepository.Remove(_tasks);
                 dataTransaction.Commit();
