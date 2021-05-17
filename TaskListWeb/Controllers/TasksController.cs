@@ -1,4 +1,5 @@
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using TaskList._01___Application.ViewModels;
 using TaskList._01___Domain;
 using TaskList._01___Domain.Entities.Enums;
 using TaskList._01___Domain.Interfaces;
+using TaskList._02___Domain.Command;
 using TaskList._03___Infra.Repositories;
 
 
@@ -34,17 +36,19 @@ namespace TaskListWeb.Controllers
         private readonly ITaskRepository tasksRepository;
         private readonly IMapper mapper;
         private readonly IDataTransaction dataTransaction;
+        private readonly IMediator _mediator;
 
         /// <summary>
         /// Método cosntrutor
         /// </summary>
         /// <param name="_tasksRepository"></param>
         /// <param name="_mapper"></param>
-        public TasksController([FromServices] ITaskRepository _tasksRepository, [FromServices] IMapper _mapper, IDataTransaction _dataTransaction)
+        public TasksController([FromServices] ITaskRepository _tasksRepository, [FromServices] IMapper _mapper, IDataTransaction _dataTransaction, IMediator mediator)
         {
             tasksRepository = _tasksRepository;
             mapper = _mapper;
             dataTransaction = _dataTransaction;
+            _mediator = mediator;
         }
 
         /// <summary>
@@ -148,50 +152,59 @@ namespace TaskListWeb.Controllers
         /// <returns></returns>
         //[Authorize("Bearer")]
         [HttpPost]
-        public async Task<ActionResult<TasksViewModel>> Post([FromBody] TasksViewModel _tasks)
+        //public async Task<ActionResult<TasksViewModel>> Post([FromBody] TasksViewModel _tasks)
+        public async Task<IActionResult> Post(TaskCreateCommand command)
         {
-
-
-            if (_tasks == null)
-                return BadRequest(new { error = "Não foi possível abrir tarefa, verifique!" });
-
             try
             {
-                object result;
-                ;
-
-                if (!tasksRepository.ValidateUniqueTasksAsync(_tasks.Title).Result)
-                {
-                    result = new
-                    {
-                        message = "Tarefa já existe"
-                    };
-
-                    return Ok(result);
-                }
-
-                var _tasksSent = mapper.Map<Tasks>(_tasks);
-
-                _tasksSent.ChangeDateForStatus(EnTypeStatus.Open);
-
-                await tasksRepository.Save(_tasksSent);
-
-                dataTransaction.Commit();
-
-                result = new
-                {
-                    message = "Tarefa criada"
-                };
-
+                var result = await _mediator.Send(command);
                 return Ok(result);
 
             } catch (Exception error)
             {
-
-                dataTransaction.RollBack();
-                throw new Exception(error.Message.ToString());
-
+               throw new Exception(error.InnerException.ToString());
             }
+
+            //if (_tasks == null)
+            //    return BadRequest(new { error = "Não foi possível abrir tarefa, verifique!" });
+
+            //try
+            //{
+            //    object result;
+            //    ;
+
+            //    if (!tasksRepository.ValidateUniqueTasksAsync(_tasks.Title).Result)
+            //    {
+            //        result = new
+            //        {
+            //            message = "Tarefa já existe"
+            //        };
+
+            //        return Ok(result);
+            //    }
+
+            //    var _tasksSent = mapper.Map<Tasks>(_tasks);
+
+            //    _tasksSent.ChangeDateForStatus(EnTypeStatus.Open);
+
+            //    await tasksRepository.Save(_tasksSent);
+
+            //    dataTransaction.Commit();
+
+            //    result = new
+            //    {
+            //        message = "Tarefa criada"
+            //    };
+
+            //    return Ok(result);
+
+            //} catch (Exception error)
+            //{
+
+            //    dataTransaction.RollBack();
+            //    throw new Exception(error.Message.ToString());
+
+            //}
         }
 
 
@@ -295,7 +308,8 @@ namespace TaskListWeb.Controllers
             if (_tasks == null)
                 return NotFound();
 
-            try {
+            try
+            {
 
                 tasksRepository.Remove(_tasks);
                 dataTransaction.Commit();

@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
@@ -42,6 +43,7 @@ namespace TaskListWeb
             services.AddScoped<DataContext, DataContext>();
             services.AddScoped<IDataTransaction, DataTransaction>();
             services.AddScoped<ITaskRepository, TaskRepository>();
+            services.AddMediatR(typeof(TaskList._02___Domain.Handler.TaskHandler));
             services.AddCors();
 
 

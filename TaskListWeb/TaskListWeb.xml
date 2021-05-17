@@ -19,7 +19,7 @@
             <response code="404">Not Found</response>
             <response code="500">Internal server error</response>
         </member>
-        <member name="M:TaskListWeb.Controllers.TasksController.#ctor(TaskList._03___Infra.Repositories.ITaskRepository,AutoMapper.IMapper,TaskList._01___Domain.Interfaces.IDataTransaction)">
+        <member name="M:TaskListWeb.Controllers.TasksController.#ctor(TaskList._03___Infra.Repositories.ITaskRepository,AutoMapper.IMapper,TaskList._01___Domain.Interfaces.IDataTransaction,MediatR.IMediator)">
             <summary>
             Método cosntrutor
             </summary>
@@ -46,7 +46,7 @@
             <param name="title"></param>
             <returns></returns>
         </member>
-        <member name="M:TaskListWeb.Controllers.TasksController.Post(TaskList._01___Application.ViewModels.TasksViewModel)">
+        <member name="M:TaskListWeb.Controllers.TasksController.Post(TaskList._02___Domain.Command.TaskCreateCommand)">
             <summary>
             Inserir tarefa
             </summary>
