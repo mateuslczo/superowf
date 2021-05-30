@@ -150,9 +150,8 @@ namespace TaskListWeb.Controllers
         /// </summary>
         /// <param name="_tasks"></param>
         /// <returns></returns>
-        //[Authorize("Bearer")]
+        [Authorize("Bearer")]
         [HttpPost]
-        //public async Task<ActionResult<TasksViewModel>> Post([FromBody] TasksViewModel _tasks)
         public async Task<IActionResult> Post(TaskCreateCommand command)
         {
             try
@@ -163,7 +162,12 @@ namespace TaskListWeb.Controllers
             } catch (Exception error)
             {
                throw new Exception(error.InnerException.ToString());
-            }
+            };
+
+            /* Após implementação do padrão Mediator, os métodos devem ser refatorados
+             * as linhas abaixo passam a não fazerem mais sentido neste ponto do método
+             * e sim dentro dos métodos q compõem o padrão MediatR
+             */
 
             //if (_tasks == null)
             //    return BadRequest(new { error = "Não foi possível abrir tarefa, verifique!" });
